@@ -125,7 +125,8 @@ x = np.random.radn(1000)
 expr = delayed(X).sort()
 timeit(expr)
 ```
-Focus on facilitating parametric benchmarks (e.g. evaluate time complexity) 
+Facilitating parametric benchmarks (e.g. evaluate time complexity) 
+<div style="height:-50px"></div>
 
 .pull-right[
 [github.com/symerio/neurtu](https://github.com/symerio/neurtu)
@@ -234,6 +235,9 @@ resources (threads, processes) for a fixed problem size.
 --
 
  - results may be strongly impacted by CPU frequency scheduling
+  <img src='img/avx_benchmarking.png' style='width: 95%' />
+--
+
  - parallel code may be slower in some cases: always check.
 
 ---
@@ -261,10 +265,6 @@ cases = [delayed(X, tags={'OMP_NUM_THREADS': num_threads}).dot(X.T)
 ## Conclusions
 
 - A package for parametric benchmarks with a common API for different metrics
---
-
-- Benchmarking is difficult
-  <img src='img/avx_benchmarking.png' style='width: 95%' />
 --
 
 - Future work: estimation of time and memory complexity O(N^p), fixed computational budget,
