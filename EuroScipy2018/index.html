@@ -99,6 +99,8 @@ automatically determines `repeat`, `number`.
 
  - `%timeit` not easily usable from scripts `ipython.magic('timeit..`
    → see [perf](https://github.com/vstinner/perf) package
+--
+
  - parametric benchmarks: string templating, partial functions ?
  - evaluating other metrics with a similar API
  - need standard results format
@@ -112,11 +114,14 @@ Benchmarking package that allows evaluations of multiple metrics,
  - uses timeit for time measurement, with determination of the number of iterations
  - uses [memory_profiler](https://github.com/pythonprofilers/memory_profiler) for peak memory evaluation
 
+--
+
 Based on delayed evaluation,
 ```py
 from neurtu import delayed, timeit
 
 x = np.random.radn(1000)
+
 expr = delayed(X).sort()
 timeit(expr)
 ```
@@ -169,6 +174,8 @@ N
 100000  0.001053  0.001056  2.141577e-06
 ```
 
+--
+
 and other metrics,
 ```py
 >>> bench = neurtu.Benchmark(wall_time=True, cpu_time=True, peak_memory=True)
@@ -184,7 +191,7 @@ N
 ---
 ## Demo: benchmarking LogisticRegression
 
-https://github.com/rth/talks/EuroScipy2018/logistic_regression_scaling.ipynb
+[github.com/rth/talks/EuroScipy2018/logistic_regression_scaling.ipynb](https://github.com/rth/talks/blob/master/EuroScipy2018/logistic_regression_scaling.ipynb)
 
 ---
 ## Other OS level metrics
@@ -212,11 +219,10 @@ by *Julia Evans ([adapted](https://drawings.jvns.ca/proc/))*
 
 ## Evaluating parallel performance
 
-Sometimes by staring at `htop` output,
+Sometimes by looking at `htop` output,
 
 <img src='./img/cpu_load.gif' style="width: 100%;" />
 
---
 
 Loading all CPU cores is not the objective, faster computing is.
 
