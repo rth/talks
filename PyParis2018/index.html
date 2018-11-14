@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pyodide: scientific Python compiled in WebAssembly, and applications</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./slides.css">
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Pyodide: scientific Python compiled in WebAssembly, and applications
+
+
+Roman Yurchak
+
+<div style="height:100px"></div>
+
+.pull-left[
+*PyData Paris*
+]
+
+.pull-right[
+*<span style="white-space: nowrap">12 November 2018</span>*
+]
+
+---
+class: left, middle
+
+# Outline
+
+
+ 1. Motivation for scientific Python running in the browser
+ 2. Implementation
+ 3. Applications
+
+
+---
+
+## Sharing results / collaboration
+
+
+
+
+
+---
+## Architecture
+
+
+<img src='./img/iodide_architecture_part0.svg' style='width: 100%;'/>
+
+
+<p style='height: 100px'></p>
+
+.credits[
+Adapted from: <span style="white-space: nowrap">jupyter.readthedocs.io/en/latest/architecture/how_jupyter_ipython_work.html#notebooks</span>
+]
+
+---
+
+## Architecture
+
+
+<img src='./img/iodide_architecture.svg' style='width: 100%;'/>
+
+
+<p style='height: 100px'></p>
+
+.credits[
+Adapted from: <span style="white-space: nowrap">jupyter.readthedocs.io/en/latest/architecture/how_jupyter_ipython_work.html#notebooks</span>
+]
+
+---
+
+# Sharing of notebooks
+
+
+.left-column[
+
+###  Jupyter like model
+
+**Local**
+
+Install conda, Jupyter, then project-specific dependencies
+
+**Remote**
+
+Deploy in a container (binder etc.)
+
+]
+--
+.right-column[
+
+### Iodide model
+
+**Local**
+
+Deploy to a static webserver
+<span style="white-space: nowrap">Just open it in your browser</span>
+
+**Remote**
+
+Share a single file containing data, report, code and dependencies
+Just open it in your browser
+
+]
+
+---
+# Pyodide
+.slide-items[
+
+.left-column[
+
+<p style='margin: 5px 0;'>Python scientific stack, compiled to WebAssembly</p>
+.small[
+- created by Michael Droettboom
+- language plugin for Iodide
+]
+
+<p style='margin: 5px 0'>Upstream CPython</p>
+.small[
+- numpy, pandas, matplotlib
+]
+
+<p style='margin: 5px 0'>WebAssembly</p>
+.small[
+ - A fast way to run compiled code in the browser
+ ]
+
+<p style='margin: 5px 0'>Related projects</p>
+.small[
+ - pypyjs, brython
+ ]
+]
+
+.right-column[
+
+<img src='./img/pyodide_logos.svg' />
+]
+
+]
+---
+# Supported packages
+
+
+<img src='./img/pyodide_packages_part0.svg' style='width: 90%;'/>
+
+---
+# Supported packages
+
+<img src='./img/pyodide_packages_part1.svg' style='width: 90%;'/>
+
+---
+# Supported packages
+
+<img src='./img/pyodide_packages_part2.svg' style='width: 90%;'/>
+
+---
+<h1 style='margin-bottom: 5px;'> Performance </h1>
+
+
+<img src='./img/benchmark_results.svg' style='width: 85%;'/>
+
+.credits[
+github.com/iodide-project/pyodide/tree/master/benchmark
+]
+---
+# Build apporach
+
+
+---
+# System calls
+
+For example,
+
+- ↓ `os.open` in Python
+- ↓ CPython: call `os_open_impl` C function
+
+--
+
+.left-column[
+**Linux**
+- ↓ `open` system call to `glibc`
+- ↓ Linux kernel
+]
+
+--
+
+.right-column[
+**Emscripten / WebAssembly**
+- ↓ Emscripten
+- ↓ system call to `musl` libc
+- ↓ WebAssembly engine
+]
+
+---
+
+# System calls (sometimes)
+
+For example,
+
+- ↓ `os.statvfs` in Python (disk space usage)
+- ↓ CPython: call `os_statvfs_impl` C function
+
+
+.left-column[
+**Linux**
+- ↓ `statvfs` system call to `glibc`
+- ↓ Linux kernel
+]
+
+
+.right-column[
+**Emscripten / WebAssembly**
+- ↓ Emscripten : not implemented; return "safe and sane values"
+- ✗ system call to `musl` libc
+- ✗ WebAssembly engine
+]
+
+Most system calls work, but there are some edge cases.
+---
+# What doesn't work
+
+**Probably never**
+
+ - network sockets
+ - multiprocessing
+ - host filesystem access
+
+
+**Should work someday**
+
+ - threads
+ - async
+
+---
+# Testing
+
+<div class='left-column' style='width: 70%;'>
+<p>
+Pytest is supported: test collection and execution in the browser
+</p>
+</div>
+
+<div class='right-column' style='width: 13%; '>
+<img src='img/pytest_logo.png' style='width: 100%' />
+</div>
+
+
+--
+
+.reset-column[
+**Test suites**
+
+- CPython: 380 test files / 497 pass (increasing, but some will never pass due to WebAssembly environement)
+- numpy: 3145 passsed, 42 failed (+ some collection failures), 47 skipped
+- scikit-learn: WIP, looks promising. Some remaining issues with Fortran / LAPACK calls in scipy.
+]
+
+
+---
+# Planned language interoperability
+
+
+<img src='./img/language_interperability.png' style='width: 100%;'/>
+
+
+---
+
+class: center, middle
+
+# Application: in-browser data analytics using Iodide and OfficeJS
+
+
+Jean-Paul Smets
+
+---
+
+# Iodide included in the OfficeJS App Store
+
+.left-column[
+
+- online and offline use
+- synchronization with Dropbox, WebDAV, ERP5 possible with JIO library
+- can be embedded into any business application
+]
+<div class='right-column' style='width: 40%; margin-left: 10%; '>
+<img src='./img/NXD-Media.Logo.Officejs.png' style='width: 60%; margin-left:20%;'/>
+<div style="text-align: center">
+<h3 style='margin-bottom: 20px'>OfficeJS</h3>
+HTML5 Productivity App Store
+</div>
+</div>
+
+
+---
+
+# MicroBJ
+
+<p style='margin: 0'>Goal: provide an easy to deploy business intelligence tool that is integrated with ERP5</p>
+.small[
+- inventory reporting
+- best sales reporting
+- inventory prevision
+]
+
+<p style='margin: 0'>Constraints</p>
+.small[
+- China network prevents easy use of WebSockets or WebRTC
+- China cloud is 20x more expensive than in Europe
+]
+
+<p style='margin: 0;'> Solution </p>
+.small[
+- run in the browser
+- use JIO to download data from ERP5 to OfficeJS Iodide
+]
+
+---
+# Demo
+
+---
+
+# Development
+
+.left-column[
+
+<img src='./img/mozilla-logo-bw-rgb.png' style='width: 70%; margin: 30px 10px;'/>
+
+<b>Iodide / Pyodide projects</b>
+
+Brendan Colloran <br />
+Hamilton Ulmer  <br />
+William Lachance <br />
+Michael Droettboom <br />
+...
+
+]
+
+.right-column[
+
+<img src='./img/NXD-Official.Logo.png' style='width: 75%; margin: 30px 0px;'/>
+
+<b>OfficeJs integration</b>
+
+Richard Szczerba  <br />
+...
+]
+
+---
+
+## Conclusions
+
+---
+class: center, middle
+
+<h3>Thank you!</h3>
+
+<h3>Questions?</h3>
+
+<div style="height:150px"></div>
+
+
+
+    </textarea>
+    <script src="../js/remark-latest.min.js">
+    </script>
+    <script>
+	    remark.macros.scale = function (percentage) {
+          var url = this;
+          return '<img src="' + url + '" style="width: ' + percentage + '" />';
+      };
+      remark.macros.scaleH = function (percentage) {
+          var url = this;
+          return '<img src="' + url + '" style="height: ' + percentage + '" />';
+      };
+      config_remark = {
+        highlightStyle: 'github',
+        highlightSpans: true,
+        highlightLines: true,
+        // ratio: "16:9"
+      };
+      var slideshow = remark.create(config_remark);
+    </script>
+    <!-- GATAG -->
+  </body>
+</html>
