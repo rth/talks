@@ -214,19 +214,19 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:Arial;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="139.62769"
+       x="144.39012"
        y="64.090485"
        id="text4522-3-5"><tspan
          sodipodi:role="line"
          id="tspan4520-6-3"
-         x="139.62769"
+         x="144.39012"
          y="64.090485"
-         style="stroke-width:0.26458332px">WebAssembly</tspan><tspan
+         style="stroke-width:0.26458332px">Browser</tspan><tspan
          sodipodi:role="line"
-         x="139.62769"
+         x="144.39012"
          y="69.449837"
          style="stroke-width:0.26458332px"
-         id="tspan4577">     engine</tspan></text>
+         id="tspan4577"> engine</tspan></text>
     <rect
        style="opacity:1;fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:0.46500003;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect4579"

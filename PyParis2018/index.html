@@ -19,34 +19,78 @@ Roman Yurchak
 
 .pull-left[
 *PyData Paris*
-]
-
-.pull-right[
 *<span style="white-space: nowrap">12 November 2018</span>*
 ]
 
----
-
-# Outline
-
-
-
-
- 1. Iodide project: interactive programming environment for the browser
- 2. Pyodide: scientific Python stack compiled in WebAssembly
- 3. Applications
-
+.pull-right[
+@RomanYurchak
+]
 
 ---
 
-## Introduction
+# Agenda
 
 
+<div style='height: 100px;'>  </div>
 
+.small[
+
+1. Iodide: interactive programming environment for the browser
+2. Pyodide: scientific Python stack compiled in WebAssembly
+3. Applications
+
+ ]
 
 
 ---
-## Architecture
+
+# Iodide
+
+<div class='left-column' style='width: 60%;'>
+An interactive programming environment for scientists in the browser <br />
+
+<br />
+
+<a src='https://iodide.io/' style='color: blue;'> iodide.io </a>
+</div>
+
+<div class='right-column' style='width: 25%; margin-left: 15%;'>
+<img src='./img/iodide_logo.png' style='width: 45%;'/>
+</div>
+
+.reset-column[
+]
+
+Examples
+<div class="iodide-examples" style='width: 100%;'>
+    <div style='float: left; width: 29%;'>
+  <a href="https://iodide.io/iodide-examples/lorenz-attractor-pres.html">
+      <div>
+      <img src="https://media.giphy.com/media/ftdkB78fuQ1Eb3J2o1/giphy.gif" width="250" height="250">
+      </div>
+      Lorenz Attractor
+  </a>
+    </div>
+    <div style='float: left; width: 29%'>
+	<a href="https://iodide.io/iodide-examples/world-happiness-report-2018.html">
+      <div>
+      <img src="https://media.giphy.com/media/i4rRuA3cksj8a9R58g/giphy.gif" width="250" height="250">
+      </div>
+      World Happiness Report
+	</a>
+    </div>
+    <div style='float: left; width: 29%;'>
+  <a href="https://iodide.io/iodide-examples/eviction-notices-sf.html">
+     <div>
+      <img src="https://media.giphy.com/media/MohSU55IoyGmAXgEkY/giphy.gif" width="250" height="250">
+     </div>
+      Eviction Notices in SF 
+  </a>
+    </div>
+</div>
+
+---
+# Architecture
 
 
 <img src='./img/iodide_architecture_part0.svg' style='width: 100%;'/>
@@ -60,7 +104,7 @@ Adapted from: <span style="white-space: nowrap">jupyter.readthedocs.io/en/latest
 
 ---
 
-## Architecture
+# Architecture
 
 
 <img src='./img/iodide_architecture.svg' style='width: 100%;'/>
@@ -284,6 +328,31 @@ Pytest is supported: test collection and execution in the browser
 
 ---
 
+# Contributors welcome
+
+Open source on Github,
+
+[github.com/iodide-project/pyodide](http://github.com/iodide-project/pyodide)
+
+[github.com/iodide-project/iodide](http://github.com/iodide-project/iodide)
+
+
+Looking for,
+- Experimenters
+- Designers
+- Programmers
+- Writers
+- Bug hunters
+
+.left-column[
+<p>.</p>
+]
+.right-column[
+<img src='./img/iodide_logo.png' style='width: 30%; margin-top: -400px;'/>
+]
+
+---
+
 class: center, middle
 
 ## Application: in-browser data analytics using Iodide and OfficeJS
@@ -318,17 +387,16 @@ HTML5 Productivity App Store
 
 # MicroBJ use case
 
-<p style='margin: 0'>Goal: provide an easy to deploy business intelligence tool that is integrated with ERP5</p>
+<p style='margin: 0'>Goal: provide an easy to deploy business intelligence tool that is integrated with ERP5 (an Enterprise Resource Planning sofware)</p>
 .small[
-- inventory reporting
+- inventory reporting and prevision
 - best sales reporting
-- inventory prevision
 ]
 
 <p style='margin: 0'>Constraints</p>
 .small[
 - China network prevents easy use of WebSockets or WebRTC
-- China cloud is 20x more expensive than in Europe
+- Cloud is 20x more expensive than in Europe
 ]
 
 <p style='margin: 0;'> Solution </p>
