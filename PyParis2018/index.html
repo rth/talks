@@ -202,10 +202,18 @@ Just open it in your browser
 <img src='./img/pyodide_packages_part2.svg' style='width: 90%;'/>
 
 ---
-<h1 style='margin-bottom: 5px;'> Performance </h1>
+<h1 style='margin-bottom: 2px;'> Performance </h1>
 
 
-<img src='./img/benchmark_results.svg' style='width: 85%;'/>
+<p style='margin: 5px 0;'>
+<img src='./img/benchmark_results.svg' style='width: 80%;'/>
+</p>
+
+.small[
+<p style='margin: 0;'>
+Firefox: 4-8 slower for pure Python, 1-2 times slower for C-ext. Ideal scaling with the number of users.
+</p>
+]
 
 .credits[
 github.com/iodide-project/pyodide/tree/master/benchmark
@@ -282,7 +290,7 @@ Most system calls work, but there are some edge cases.
 ---
 # What doesn't work
 
-**Probably never**
+**Difficult**
 
  - network sockets
  - multiprocessing
@@ -325,6 +333,14 @@ Pytest is supported: test collection and execution in the browser
 
 <img src='./img/language_interperability.png' style='width: 100%;'/>
 
+---
+
+# Pyodide demo
+
+
+[iodide.io/iodide-examples/python.html](https://iodide.io/iodide-examples/python.html)
+
+[iodide.io/pyodide-demo/matplotlib-sideload.html?sideload=https://matplotlib.org/examples/animation/rain.py](https://iodide.io/pyodide-demo/matplotlib-sideload.html?sideload=https://matplotlib.org/examples/animation/rain.py)
 
 ---
 
@@ -410,6 +426,10 @@ HTML5 Productivity App Store
 
 Firefox preferred.
 
+https://iodide-notebook.app.officejs.com/
+
+[JIO example](https://iodide.io/master/?gist=https://gist.github.com/enymuss/5a7c06aa9b57ef6ba2d22c812ca4e786#file-gistfile1-html)
+
 ---
 
 # Development
@@ -424,6 +444,7 @@ Brendan Colloran <br />
 Hamilton Ulmer  <br />
 William Lachance <br />
 Michael Droettboom <br />
+Teon Brooks <br />
 ...
 
 ]
