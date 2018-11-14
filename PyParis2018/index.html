@@ -26,19 +26,20 @@ Roman Yurchak
 ]
 
 ---
-class: left, middle
 
 # Outline
 
 
- 1. Motivation for scientific Python running in the browser
- 2. Implementation
+
+
+ 1. Iodide project: interactive programming environment for the browser
+ 2. Pyodide: scientific Python stack compiled in WebAssembly
  3. Applications
 
 
 ---
 
-## Sharing results / collaboration
+## Introduction
 
 
 
@@ -166,8 +167,23 @@ Just open it in your browser
 github.com/iodide-project/pyodide/tree/master/benchmark
 ]
 ---
-# Build apporach
+# Build process
 
+
+<img src='./img/wasm_building.svg' style='width: 100%;'/>
+
+<div style='height: 30px'>
+
+</div>
+
+<div class='right-column small' style='width: 50%; '>
+kripken.github.io/emscripten-site/
+</div>
+<div class='right-column' style='width: 40%; margin-left: 10%; '>
+
+<img src='./img/Emscripten_logo_full.png' style='width: 60%;'/>
+
+</div>
 
 ---
 # System calls
@@ -253,8 +269,8 @@ Pytest is supported: test collection and execution in the browser
 .reset-column[
 **Test suites**
 
-- CPython: 380 test files / 497 pass (increasing, but some will never pass due to WebAssembly environement)
-- numpy: 3145 passsed, 42 failed (+ some collection failures), 47 skipped
+- CPython: 380 test files / 497 pass (increasing, but some will never pass due to WebAssembly environment)
+- numpy: 3145 passed, 42 failed (+ some collection failures), 47 skipped
 - scikit-learn: WIP, looks promising. Some remaining issues with Fortran / LAPACK calls in scipy.
 ]
 
@@ -270,10 +286,14 @@ Pytest is supported: test collection and execution in the browser
 
 class: center, middle
 
-# Application: in-browser data analytics using Iodide and OfficeJS
+## Application: in-browser data analytics using Iodide and OfficeJS
 
 
 Jean-Paul Smets
+
+.pull-right[
+<img src='./img/NXD-Official.Logo.png' style='width: 80%;'/>
+]
 
 ---
 
@@ -296,7 +316,7 @@ HTML5 Productivity App Store
 
 ---
 
-# MicroBJ
+# MicroBJ use case
 
 <p style='margin: 0'>Goal: provide an easy to deploy business intelligence tool that is integrated with ERP5</p>
 .small[
@@ -319,6 +339,8 @@ HTML5 Productivity App Store
 
 ---
 # Demo
+
+Firefox preferred.
 
 ---
 
@@ -347,10 +369,6 @@ Michael Droettboom <br />
 Richard Szczerba  <br />
 ...
 ]
-
----
-
-## Conclusions
 
 ---
 class: center, middle
