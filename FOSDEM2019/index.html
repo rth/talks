@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pyodide: scientific Python compiled in WebAssembly, and applications</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./slides.css">
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Pyodide: scientific Python compiled in WebAssembly
+
+
+Roman Yurchak
+
+<div style="height:100px"></div>
+
+.pull-left[
+*FOSDEM 2019*
+]
+
+---
+
+# Iodide
+
+<div class='left-column' style='width: 60%;'>
+An interactive programming environment for scientists in the browser <br />
+
+<br />
+
+<a src='https://iodide.io/' style='color: blue;'> iodide.io </a>
+</div>
+
+<div class='right-column' style='width: 25%; margin-left: 15%;'>
+<img src='./img/iodide_logo.png' style='width: 45%;'/>
+</div>
+
+.reset-column[
+]
+
+Examples
+<div class="iodide-examples" style='width: 100%;'>
+    <div style='float: left; width: 29%;'>
+  <a href="https://extremely-alpha.iodide.io/notebooks/34/?viewMode=report">
+      <div>
+      <img src="https://media.giphy.com/media/ftdkB78fuQ1Eb3J2o1/giphy.gif" width="250" height="250">
+      </div>
+      Lorenz Attractor
+  </a>
+    </div>
+    <div style='float: left; width: 29%'>
+	<a href="https://extremely-alpha.iodide.io/notebooks/193/?viewMode=report">
+      <div>
+      <img src="https://media.giphy.com/media/i4rRuA3cksj8a9R58g/giphy.gif" width="250" height="250">
+      </div>
+      World Happiness Report
+	</a>
+    </div>
+    <div style='float: left; width: 29%;'>
+  <a href="https://iodide.io/iodide-examples/eviction-notices-sf.html">
+     <div>
+      <img src="https://media.giphy.com/media/MohSU55IoyGmAXgEkY/giphy.gif" width="250" height="250">
+     </div>
+      Eviction Notices in SF 
+  </a>
+    </div>
+</div>
+
+---
+# Architecture
+
+
+<img src='./img/iodide_architecture_part0.svg' style='width: 100%;'/>
+
+
+<p style='height: 100px'></p>
+
+.credits[
+Adapted from: <span style="white-space: nowrap">jupyter.readthedocs.io/en/latest/architecture/how_jupyter_ipython_work.html#notebooks</span>
+]
+
+---
+
+# Architecture
+
+
+<img src='./img/iodide_architecture.svg' style='width: 100%;'/>
+
+
+<p style='height: 100px'></p>
+
+.credits[
+Adapted from: <span style="white-space: nowrap">jupyter.readthedocs.io/en/latest/architecture/how_jupyter_ipython_work.html#notebooks</span>
+]
+
+---
+
+# Sharing of notebooks
+
+
+.left-column[
+
+###  Jupyter like model
+
+**Local**
+
+Install conda, Jupyter, then project-specific dependencies
+
+**Remote**
+
+Deploy in a container (binder etc.)
+
+]
+--
+.right-column[
+
+### Iodide model
+
+**Local**
+
+Deploy to a static webserver
+<span style="white-space: nowrap">Just open it in your browser</span>
+
+**Remote**
+
+Share a single file containing data, report, code and dependencies
+Just open it in your browser
+
+]
+
+---
+# Pyodide
+.slide-items[
+
+.left-column[
+
+<p style='margin: 5px 0;'>Python scientific stack, compiled to WebAssembly</p>
+.small[
+- created by Michael Droettboom
+- language plugin for Iodide
+]
+
+<p style='margin: 5px 0'>Upstream CPython</p>
+.small[
+- numpy, pandas, matplotlib
+]
+
+<p style='margin: 5px 0'>WebAssembly</p>
+.small[
+ - A fast way to run compiled code in the browser
+ ]
+
+<p style='margin: 5px 0'>Related projects</p>
+.small[
+ - pypyjs, brython
+ ]
+]
+
+.right-column[
+
+<img src='./img/pyodide_logos.svg' />
+]
+
+]
+---
+# Pyodide in practice
+
+```html
+<html>
+  <head><meta charset="utf-8"/></head>
+
+  <body>
+    <script src="https://extremely-alpha.iodide.app/pyodide-0.7.0/pyodide.js">
+    </script>
+
+    <script>
+      languagePluginLoader.then(() => {
+	  pyodide.loadPackage(['numpy']).then(() => {
+	      pyodide.runPython(`
+                  import numpy as np
+
+                  x = np.random.rand(100)
+                  y = x.sum()`
+	      );
+
+	      var y_train = pyodide.pyimport('y');
+	      console.log(y);
+      });});
+    </script>
+  </body>
+</html>
+```
+
+
+---
+# Supported packages
+
+
+<img src='./img/pyodide_packages_part0.svg' style='width: 90%;'/>
+
+---
+# Supported packages
+
+<img src='./img/pyodide_packages_part1.svg' style='width: 90%;'/>
+
+---
+# Supported packages
+
+<img src='./img/pyodide_packages_part2.svg' style='width: 90%;'/>
+
+---
+<h1 style='margin-bottom: 2px;'> Performance </h1>
+
+
+<p style='margin: 5px 0;'>
+<img src='./img/benchmark_results.svg' style='width: 80%;'/>
+</p>
+
+.small[
+<p style='margin: 0;'>
+Firefox: 4-8 slower for pure Python, 1-2 times slower for C-ext. Ideal scaling with the number of users.
+</p>
+]
+
+.credits[
+github.com/iodide-project/pyodide/tree/master/benchmark
+]
+---
+# Build process
+
+
+<img src='./img/wasm_building.svg' style='width: 100%;'/>
+
+<div style='height: 30px'>
+
+</div>
+
+<div class='right-column small' style='width: 50%; '>
+kripken.github.io/emscripten-site/
+</div>
+<div class='right-column' style='width: 40%; margin-left: 10%; '>
+
+<img src='./img/Emscripten_logo_full.png' style='width: 60%;'/>
+
+</div>
+
+---
+# System calls
+
+For example,
+
+- ↓ `os.open` in Python
+- ↓ CPython: call `os_open_impl` C function
+
+--
+
+.left-column[
+**Linux**
+- ↓ `open` system call to `glibc`
+- ↓ Linux kernel
+]
+
+--
+
+.right-column[
+**Emscripten / WebAssembly**
+- ↓ Emscripten
+- ↓ system call to `musl` libc
+- ↓ WebAssembly engine
+]
+
+---
+
+# System calls (sometimes)
+
+For example,
+
+- ↓ `os.statvfs` in Python (disk space usage)
+- ↓ CPython: call `os_statvfs_impl` C function
+
+
+.left-column[
+**Linux**
+- ↓ `statvfs` system call to `glibc`
+- ↓ Linux kernel
+]
+
+
+.right-column[
+**Emscripten / WebAssembly**
+- ↓ Emscripten : not implemented; return "safe and sane values"
+- ✗ system call to `musl` libc
+- ✗ WebAssembly engine
+]
+
+Most system calls work, but there are some edge cases.
+---
+# What doesn't work
+
+**Difficult**
+
+ - network sockets
+ - multiprocessing
+ - host filesystem access
+
+
+**Should work someday**
+
+ - threads
+ - async
+
+---
+# Testing
+
+<div class='left-column' style='width: 70%;'>
+<p>
+Pytest is supported: test collection and execution in the browser
+</p>
+</div>
+
+<div class='right-column' style='width: 13%; '>
+<img src='img/pytest_logo.png' style='width: 100%' />
+</div>
+
+
+--
+
+.reset-column[
+**Test suites**
+
+- CPython: 380 test files / 497 pass (increasing, but some will never pass due to WebAssembly environment)
+- numpy: 3145 passed, 42 failed (+ some collection failures), 47 skipped
+- scikit-learn: WIP, looks promising. Some remaining issues with Fortran / LAPACK calls in scipy.
+]
+
+
+---
+# Planned language interoperability
+
+
+<img src='./img/language_interperability.png' style='width: 100%;'/>
+
+---
+
+# Development
+
+.left-column[
+
+<img src='./img/mozilla-logo-bw-rgb.png' style='width: 70%; margin: 30px 10px;'/>
+
+Brendan Colloran <br />
+Hamilton Ulmer  <br />
+William Lachance <br />
+Michael Droettboom <br />
+Teon Brooks <br />
+...
+
+]
+
+.right-column[
+
+<img src='./img/NXD-Official.Logo.png' style='width: 75%; margin: 30px 0px;'/>
+
+]
+
+---
+class: center, middle
+
+<h3>Thank you!</h3>
+
+<h3>Questions?</h3>
+
+<div style="height:150px"></div>
+
+
+
+    </textarea>
+    <script src="../js/remark-latest.min.js">
+    </script>
+    <script>
+	    remark.macros.scale = function (percentage) {
+          var url = this;
+          return '<img src="' + url + '" style="width: ' + percentage + '" />';
+      };
+      remark.macros.scaleH = function (percentage) {
+          var url = this;
+          return '<img src="' + url + '" style="height: ' + percentage + '" />';
+      };
+      config_remark = {
+        highlightStyle: 'github',
+        highlightSpans: true,
+        highlightLines: true,
+        // ratio: "16:9"
+      };
+      var slideshow = remark.create(config_remark);
+    </script>
+    <!-- GATAG -->
+  </body>
+</html>
