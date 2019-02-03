@@ -1,0 +1,23 @@
+<html>
+  <head><meta charset="utf-8"/></head>
+
+  <body>
+    <script src="http://static.r0h.eu:59171/pyodide.js">
+    </script>
+
+    <script>
+      languagePluginLoader.then(() => {
+          pyodide.loadPackage(['numpy']).then(() => {
+              pyodide.runPython(`
+                  import numpy as np
+
+                  x = np.random.rand(100)
+                  y = x.sum()`
+              );
+
+              var y = pyodide.pyimport('y');
+	      console.log(y);
+      });});
+    </script>
+  </body>
+</html>

@@ -178,6 +178,10 @@ code {
     margin: 0px;
 }
 
+a {
+text-decoration: none;
+} 
+
 /*
 @page {
   size: 1024px 768px;

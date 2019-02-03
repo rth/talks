@@ -3,7 +3,7 @@
   <head>
     <title>Pyodide: scientific Python compiled in WebAssembly, and applications</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="./slides.css">
+    <link rel="stylesheet" type="text/css" href="../css/slides.css">
   </head>
   <body>
     <textarea id="source">
@@ -30,7 +30,7 @@ An interactive programming environment for scientists in the browser <br />
 
 <br />
 
-<a src='https://iodide.io/' style='color: blue;'> iodide.io </a>
+<a href="https://iodide.io/" style='color: blue;'>iodide.io</a>
 </div>
 
 <div class='right-column' style='width: 25%; margin-left: 15%;'>
@@ -45,7 +45,7 @@ Examples
     <div style='float: left; width: 29%;'>
   <a href="https://extremely-alpha.iodide.io/notebooks/34/?viewMode=report">
       <div>
-      <img src="https://media.giphy.com/media/ftdkB78fuQ1Eb3J2o1/giphy.gif" width="250" height="250">
+	      <img src="./img/lorenz_attractor.gif" width="250" height="250">
       </div>
       Lorenz Attractor
   </a>
@@ -53,7 +53,7 @@ Examples
     <div style='float: left; width: 29%'>
 	<a href="https://extremely-alpha.iodide.io/notebooks/193/?viewMode=report">
       <div>
-      <img src="https://media.giphy.com/media/i4rRuA3cksj8a9R58g/giphy.gif" width="250" height="250">
+	      <img src="./img/world_happiness.gif" width="250" height="250">
       </div>
       World Happiness Report
 	</a>
@@ -61,12 +61,20 @@ Examples
     <div style='float: left; width: 29%;'>
   <a href="https://iodide.io/iodide-examples/eviction-notices-sf.html">
      <div>
-      <img src="https://media.giphy.com/media/MohSU55IoyGmAXgEkY/giphy.gif" width="250" height="250">
+	     <img src="./img/eviction_notices.gif" width="250" height="250">
      </div>
       Eviction Notices in SF 
   </a>
     </div>
 </div>
+---
+
+# Iodide overview
+
+
+<img src='./img/iodide_overview.png' style='width: 108%;'/>
+
+<a href="https://iodide.io/" style='color: blue;'>iodide.io</a>
 
 ---
 # Architecture
@@ -142,7 +150,7 @@ Just open it in your browser
 - language plugin for Iodide
 ]
 
-<p style='margin: 5px 0'>Upstream CPython</p>
+<p style='margin: 5px 0'>CPython interpreter</p>
 .small[
 - numpy, pandas, matplotlib
 ]
@@ -154,9 +162,15 @@ Just open it in your browser
 
 <p style='margin: 5px 0'>Related projects</p>
 .small[
- - pypyjs, brython
+ - PyPy.js, brython, RustPython
  ]
+.small[
+[github.com/iodide-project/pyodide](https://github.com/iodide-project/pyodide/)
 ]
+
+
+]
+
 
 .right-column[
 
@@ -165,34 +179,10 @@ Just open it in your browser
 
 ]
 ---
-# Pyodide in practice
+# Pyodide example
 
-```html
-<html>
-  <head><meta charset="utf-8"/></head>
 
-  <body>
-    <script src="https://extremely-alpha.iodide.app/pyodide-0.7.0/pyodide.js">
-    </script>
-
-    <script>
-      languagePluginLoader.then(() => {
-	  pyodide.loadPackage(['numpy']).then(() => {
-	      pyodide.runPython(`
-                  import numpy as np
-
-                  x = np.random.rand(100)
-                  y = x.sum()`
-	      );
-
-	      var y_train = pyodide.pyimport('y');
-	      console.log(y);
-      });});
-    </script>
-  </body>
-</html>
-```
-
+<img src='./img/pyodide_example.png' style='width: 95%;'/>
 
 ---
 # Supported packages
@@ -225,7 +215,7 @@ Firefox: 4-8 slower for pure Python, 1-2 times slower for C-ext. Ideal scaling w
 ]
 
 .credits[
-github.com/iodide-project/pyodide/tree/master/benchmark
+[github.com/iodide-project/pyodide/tree/master/benchmark](https://github.com/iodide-project/pyodide/tree/master/benchmark)
 ]
 ---
 # Build process
@@ -238,7 +228,7 @@ github.com/iodide-project/pyodide/tree/master/benchmark
 </div>
 
 <div class='right-column small' style='width: 50%; '>
-kripken.github.io/emscripten-site/
+<a href='https://emscripten.org/'>emscripten.org</a>
 </div>
 <div class='right-column' style='width: 40%; margin-left: 10%; '>
 
@@ -343,8 +333,34 @@ Pytest is supported: test collection and execution in the browser
 <img src='./img/language_interperability.png' style='width: 100%;'/>
 
 ---
+# Future work
 
-# Development
+- increase the percentage of passing tests
+- dynamic linking of BLAS/LAPACK in scipy
+  - possible in Emscripten 1.38.22 thanks to Kirill Smelkov
+- optimize download sizes
+- threading and async support
+- more packages
+
+<div style="height:50px"></div>
+
+Contributors welcome!
+
+---
+
+# Application: in-browser data analytics
+
+- challenges of multi-user notebooks deployment
+- running notebooks on the edge with uncertain/limited connectivity
+
+
+- Iodide and Pyodide integrated into the OfficeJS apps store
+  - online / offline usage, synchronization in Dropbox etc
+
+<img src='./img/NXD-Official.Logo.png' style='width: 39%; margin: 30px 0px;'/>
+---
+
+# Development team
 
 .left-column[
 
@@ -372,7 +388,15 @@ class: center, middle
 
 <h3>Questions?</h3>
 
-<div style="height:150px"></div>
+<div style="height:120px"></div>
+.pull-left[
+<a href="https://github.com/iodide-project/pyodide" style="white-space: nowrap">github.com/iodide-project/pyodide</a>
+]
+
+.pull-right[
+@RomanYurchak
+]
+
 
 
 
