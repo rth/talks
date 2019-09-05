@@ -20,13 +20,26 @@ Roman Yurchak
 *EuroScipy, August 2019*
 ]
 
-.pull-right[
-  ![:scale 40%](img/Symerio_logo-lowres.png)
-]
-
 
 ---
 
+## About me
+
+- Background: computational plasma physics and laboratory astophysics
+
+- Open source contributor: scikit-learn, pyodide, ..
+
+- Independent consultant for data science projects
+
+
+<br />
+
+
+.pull-right[
+  ![:scale 60%](img/Symerio_logo-lowres.png)
+]
+
+---
 ## Introduction
 
 Python in scientific computing is often used as a "glue" language. 
@@ -36,15 +49,13 @@ Python in scientific computing is often used as a "glue" language.
  - *Lines of code* : 54% Python, 24% Fortran, 19% C, 3% C++
  - *Average file edit frequency* : Python - 4 month, C - 2 years, Fortran - 6 years.
 
-Reference implementations in C/Fortran but few new contributors.
+Reference implementations in C/Fortran but few new contributions.  Performance is due to compiled extensions.
 
 --
 
-Scientific Python performance is due to its compiled extensions.
+*Alternatives*
 
-
-Alternatives:
- - Cython, Pythran, numba -- convinient but Python specific
+ - Cython, Pythran, numba -- convenient but not a standalone language
  - Fortran, C, C++, **now also Rust** -- access to another ecosystem
 
 
@@ -87,7 +98,7 @@ fn sum_vec(x: &ArrayView1<'_, f64>) -> f64 {
     x.sum()
 }
 ```
-
+'
 ---
 ## Writing Python extensions in Rust (2)
 
@@ -156,7 +167,7 @@ In scikit-learn,
 
 --
 - Parallelization with dask
-   - data.map_partitions(HashingVectorizer().transform).compute()
+   - `data.map_partitions(HashingVectorizer().transform).compute()`
 
 ---
 ## Tokenization
@@ -170,12 +181,24 @@ In scikit-learn,
 
 
 --
-**Benchmaks**
+**Benchmarks**
 
 <img src="img/tokenization-speed.png" style="width: 80%;" />
+<img src="img/tokenization-accuracy.png" style="width: 70%;" />
+
+---
+## Token counting
+
+- Due to compatible API and `cargo` fast iteration on, 
+  - `HashMap` (dict) implementations
+  - hashing algorithms: Murmurhash 2, xxhash, ..
+- Parallel implementation for `.fit` and `.transform`
+  - `X.par_iter().map(|doc| tokenize_hash(&doc))`
+
+<div style="margin-bottom: -15px;"></div>
 
 --
-<img src="img/tokenization-accuracy.png" style="width: 70%;" />
+<img src="img/vectorization-speed.png" style="width: 62%;" />
 
 ---
 ## vtext
@@ -185,8 +208,8 @@ In scikit-learn,
 **Features**
 
 - <small>Tokenization: Regexp tokenizer, Unicode segmentation</small>
-- <small>Stemming: Snowball (in Python 15-20x faster than NLTK)</small>
 - <small>Token counting similar to `CountVectorizer` and `HashingVectorizer`. </small>
+- <small>Stemming: Snowball (in Python 15-20x faster than NLTK)</small>
 - <small>Levenshtein edit distance; Sørensen-Dice, Jaro, Jaro Winkler string similarities </small>
 
 --
@@ -207,7 +230,7 @@ pip install --pre vtext
 ]
 
 .pull-right[
-<small>*For now still in alpha.*</small>
+<small>*Still in alpha.*</small>
 ]
 
 ---
@@ -216,10 +239,10 @@ pip install --pre vtext
 
  1. Automatic code formatter tools (`cargo fmt`) are great: use `black`.
  
- 2. Semantic versions pinning of dependencies for each package helps reproducibilty.
+ 2. Semantic versions pinning of dependencies for each package helps reproducibility.
     Maybe solved by `poetry` or `pipenv`.
 
- 3. Dict need not to be used for everything. Typed dict: hash map.
+ 3. Dict need not to be used for everything. Typed dict..
 
  4. Better type inference in MyPy (& Cython) and type annotations (stubs) in numpy, scipy.
 
@@ -234,7 +257,7 @@ pip install --pre vtext
 --
 - Other exciting projects
    - parsers: ARFF (OpenML), domain specific formats
-   - optimization: `argmin` aiming for `scipy.optimize` API
+   - optimization: `argmin` with `scipy.optimize` API
    - Rust implementation of Apache Arrow 
    - ...
 
