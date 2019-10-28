@@ -17,7 +17,7 @@ Roman Yurchak
 <div style="height:100px"></div>
 
 .pull-left[
-*EuroScipy, August 2019*
+*PyConDE & PyData Berlin, August 2019*
 ]
 
 
@@ -98,7 +98,7 @@ fn sum_vec(x: &ArrayView1<'_, f64>) -> f64 {
     x.sum()
 }
 ```
-'
+'See *"ndarray for numpy users"* guide.
 ---
 ## Writing Python extensions in Rust (2)
 
@@ -230,6 +230,41 @@ pip install --pre vtext
 .pull-right[
 <small>*Still in alpha.*</small>
 ]
+---
+## Further experiment ideas
+
+ - Build WebAssembly binaries -> using vtext from JS
+
+--
+ - Actually, CPython + numpy, pandas etc. build for WebAssembly
+   to run inside the browser in the **pyodide** project.
+   * Can we re-use those binaries?
+
+--
+ - Finally, it is possible to run WebAssembly binaries in Python with
+  `wasmerio/python-ext-wasm`
+   * *Toward platform independent Python wheels*
+
+<div style="margin-top: 50px;"></div>
+<img src="img/iodide_logo.png" style="width: 15%; float: left; margin: 0 30px;" />
+<img src="img/wasm-logo.jpg" style="width: 29%; float: left; margin: 0 30px;" />
+<img src="img/rust-wasm.jpg" style="width: 15%; float: left; margin: 0 30px;" />
+<div style="clear:both"></div>
+---
+## Highlight of a few other projects
+
+ - RustPython: (alpha) implementation of a Python interpreter in Rust
+
+.pull-right[
+<img src="img/RustPython-logo.png" style="margin-left: 80px; width: 30%;" />
+]
+<div style="clear:both"></div>
+
+--
+
+ - argmin / pyargmin: numerical optimization in rust with Python bindings.
+   In particular, LBFGS optimizer for ML applications.
+
 
 ---
 
@@ -271,6 +306,7 @@ Questions?
 
 
 .pull-left[
+<img src="img/twitter_icon.png" style='height: 30px;'> 
 @RomanYurchak
 ]
 
