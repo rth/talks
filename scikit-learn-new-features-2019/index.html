@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tutorial: scikit-learn new features</title>
+    <title>scikit-learn new features 2019</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./css/slides.css">
   </head>
@@ -13,37 +13,87 @@ class: center, middle
 
 # scikit-learn new features
 
-## Tutorial
-
 
 Roman Yurchak
 
-*<span style="white-space: nowrap">May 28, 2019</span>*
+*<span style="white-space: nowrap">November 5, 2019</span>*
 
 
 
 
-<div style="height:30px"></div>
+<div style="height:50px"></div>
 
 .pull-left[
-<img src="img/logo_INRIA_FR.svg" style="width: 65%;" />
+<img src="img/Symerio_logo-lowres.png" style="width: 50%;" />
 ]
 
 .pull-right[
-<div style="height:15px"></div>
+<div style="height:10px"></div>
 <img src="img/scikit-learn-logo.png" style="width: 50%;" />
 ]
-
 ---
 
 # Agenda
 
-<div style="height:35px"></div>
+ 1. scikit-learn project
 
-1. Overview of new features in v0.20, v0.21
+ 2. New features in v0.21, v0.22
 
-2. Tutorial: application examples
+ 3. Building custom estimators with compatible API
 
+ 4. Parallelism and performance
+
+---
+
+# scikit-learn project
+
+[scikit-learn.org/dev/about.html](https://scikit-learn.org/dev/about.html)
+
+.pull-left[
+- 20 core developers between Paris, Berlin, NY, Sidney and Beijing
+- Multiple funding institutions. In France: scikit-learn @ INRIA foundation
+- Consensus based decision process, otherwise vote.
+
+]
+.pull-right[
+<img src="img/inria-foundation-logo.png" style="width: 100%;" />
+<small><small> scikit-learn @ INRIA foundation sponsors</small></small>
+]
+
+---
+
+# Contribution process
+
+- Inclusion criteria:
+   - well established algorithms only (3+ years, 200+ citations)
+   - strict code quality standards (incl. API compatibility)
+- Need to be approved by 2 core developers with no negative reviews
+- Can be slow: months to years for major features. Review is the bottleneck.
+
+<img src="img/sklearn-conribution.png" style="width: 100%;" />
+
+---
+
+# scikit-learn-contrib
+
+
+Selected packages in the scikit-learn ecosystem,
+ - imbalanced-learn
+ - categorical-encoding
+ - sklearn-pandas
+ - ...
+
+Also recently [scikit-learn-extra](https://github.com/scikit-learn-contrib/scikit-learn-extra)
+for state of the art algorithms that do not satisfly scikit-learn inclusion criteria.
+
+.pull-left[
+[github.com/scikit-learn-contrib](https://github.com/scikit-learn-contrib)
+]
+
+.pull-right[
+<div style="margin-top:-20px"></div>
+<img src="img/sklearn-contrib-logo.png" style="width: 40%;" />
+]
 
 ---
 
@@ -55,16 +105,6 @@ Roman Yurchak
 ]
 
 
-**Version 0.20**
-
-
-*Sept 26, 2018* - 13 months work
-
-- 361 contributors
-- 1130 commits, 63 new features <small>(excl. bug fixes & enhancements)</small>
-
---
-
 **Version 0.21**
 
 *May 10, 2019* - 8 months work
@@ -72,7 +112,16 @@ Roman Yurchak
 - 221 contributors 
 - 795 commits, 24 new features <small>(excl. bug fixes & enhancements)</small>
 
-[scikit-learn.org/stable/whats_new.html](https://scikit-learn.org/stable/whats_new.html)
+**Version 0.22**
+
+*Nov, 2019 (provisional)* - 6 months work
+
+- 236 contributors 
+- 780+ commits, 31 new features <small>(excl. bug fixes & enhancements)</small>
+
+
+[scikit-learn.org/dev/whats_new.html](https://scikit-learn.org/dev/whats_new.html)
+
 
 ---
 # ColumnTransformer
@@ -207,7 +256,7 @@ of other features in a round-robin fashion.
 
 <div style="margin-top:-15px"></div>
 
-**Note**: NaN are ignored and handled in pre-processors as of v0.20.
+**Note**: `KNNImputer` also available as of v0.22
 
 ---
 
@@ -222,22 +271,26 @@ A new clustering algorithm related to DBSCAN, that has hyperparameters easier to
 <img src="img/optics.png" style="width: 95%;" />
 ]
 
-
 <small>*Added in v0.21 by Shane, Adrin Jalali, Erich Schubert, Hanmin Qin, Assia Benbihi.*</small>
+<div style="margin-top:-15px"></div>
+
+- Also see [scikit-learn-contrib/HDBSCAN](https://github.com/scikit-learn-contrib/HDBSCAN)
 
 ---
-## Histogram-based Gradient Boosting Trees
+### Histogram-based Gradient Boosting Trees
 
 Gradient boosting trees inspired by LightGBM, significantly faster than `GradientBoostingClassifier`
 / `GradientBoostingRegressor`
-
-**Experimental**
 
 ```py
 >>> # explicitly require this experimental feature
 >>> from sklearn.experimental import enable_hist_gradient_boosting  # noqa
 >>> from sklearn.ensemble import HistGradientBoostingClassifier
 ```
+ - initially prototyped with numba
+ - re-written in Cython
+ - multithreaded with OpenMP
+
 
 
 <small>*Added in v0.21 by Nicolas Hug and Olivier Grisel.*</small>
@@ -245,15 +298,22 @@ Gradient boosting trees inspired by LightGBM, significantly faster than `Gradien
 
 ---
 
-## NeighborhoodComponentsAnalysis
-<div style="margin-top:-40px"></div>
+### NeighborhoodComponentsAnalysis (1)
 
-## sklearn.neighbors
-
-<div style="margin-top:-10px"></div>
+<div style="margin-top:10px"></div>
 
 A metric learning algorithm that learns a linear transformation to improve
 the classification accuracy in the transformed space.
+
+<img src="img/NCA_embedding.png" style="width: 100%" />
+
+<small>*Added in v0.21 by William de Vazelhes.*</small>
+
+---
+
+### NeighborhoodComponentsAnalysis (2)
+
+<div style="margin-top:10px"></div>
 
 ```python
 from sklearn.neighbors.nca import NeighborhoodComponentsAnalysis
@@ -266,35 +326,31 @@ X, y = load_iris(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y,
      stratify=y, test_size=0.7, random_state=42)
 
-knn = KNeighborsClassifier(n_neighbors=3)
-knn.fit(X_train, y_train) 
+knn = KNeighborsClassifier(n_neighbors=3).fit(X_train, y_train) 
 
 nca = make_pipeline(NeighborhoodComponentsAnalysis(random_state=42),
-                    KNeighborsClassifier())
-nca.fit(X_train, y_train) 
+                    KNeighborsClassifier()).fit(X_train, y_train) 
 
 
 print(knn.score(X_test, y_test))   # 0.93
 print(nca.score(X_test, y_test))   # 0.96
 ```
 
-<div style="margin-top:-20px"></div>
 
-<small>*Added in v0.21 by William de Vazelhes.*</small>
+- Also see [scikit-learn-contrib/metric-learn](https://github.com/scikit-learn-contrib/metric-learn)
 ---
 # Decision trees visualization
 
-- Decision trees can be plotted with matplotlib without needing to install graphviz
-  (`tree.plot_tree`)
+- Can be plotted with matplotlib without graphviz (`tree.plot_tree`)
 - ASCII representation also available (`tree.export_text`)
+<div style="margin-top:-20px"></div>
 
 ```py
 >>> from sklearn.datasets import load_iris
 >>> from sklearn.tree import DecisionTreeClassifier
 >>> from sklearn.tree.export import export_text
 >>> iris = load_iris()
->>> X = iris['data']
->>> y = iris['target']
+>>> X, y = iris['data'], iris['target']
 >>> decision_tree = DecisionTreeClassifier(random_state=0, max_depth=2)
 >>> decision_tree = decision_tree.fit(X, y)
 >>> r = export_text(decision_tree, feature_names=iris['feature_names'])
@@ -306,10 +362,93 @@ print(nca.score(X_test, y_test))   # 0.96
 |   |   |--- class: 1
 |   |--- petal width (cm) >  1.75
 |   |   |--- class: 2
-...
 ```
+
 <div style="margin-top:-20px"></div>
 <small>*Added in v0.21 by Andreas Müller and Giuseppe Vettigli.*</small>
+<div style="margin-top:-20px"></div>
+
+- Also see [scikit-learn-contrib/skope-rules](https://github.com/scikit-learn-contrib/skope-rules)
+
+---
+
+# Permutation importance
+
+Evaluate the importance of different features, by computing the prediction score on a validation set with one randomized feature at a time.
+
+ - works for any estimator
+ - less sensitive than impurity based feature importance in Random Forest (RF)
+
+<div style="margin-top:-20px"></div>
+<small>*Added in v0.22 by Thomas Fan.*</small>
+
+---
+
+# Partial dependence plots
+
+Show the dependence between the target response and a set of target features,
+
+<img src="./img/sphx_glr_plot_partial_dependence_0021.png" style="width: 75%" />
+
+<div style="margin-top:-40px"></div>
+<small>*Added in v0.21 by Trevor Stephens and Nicolas Hug.*</small>
+
+---
+
+## Generalized Linear Models (GLM)
+
+Poisson, Gamma, Twieedie losses
+
+Useful for,
+  - data with non normal error distributions or heteroscedastic data
+  <img src="./img/heteroscedastic-data.jpg" style="width: 40%" />
+  - predicting positive counts / frequencies
+
+Implemented in GLM, maybe gradient boosting later.
+
+<small>*Provisionally added in v0.23, corresponding deviance scores available in v0.22.  *</small>
+
+
+---
+
+## Work in progress
+
+ - Improve pandas integration
+ - Better handling of categorical data 
+     - see also `pandas.Categorical` dtype
+ - Passing around information that is not (X, y)
+     - sample properties, feature names, target properties
+ - Model diagnostics
+ - Better conformance to the standard API: common tests
+
+
+[scikit-learn.org/dev/roadmap.html](https://scikit-learn.org/dev/roadmap.html)
+
+---
+# Rolling your own estimator
+
+- Inherit from base classes and re-use validators
+
+```py
+from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
+
+class MyClassifier(BaseEstimator, ClassifierMixin):
+
+    def __init__(self, demo_param='demo'):
+        self.demo_param = demo_param
+
+    def fit(self, X, y):
+
+        X, y = check_X_y(X, y)
+	self.coef_ = ..
+
+    def predict(self, X):
+        check_is_fitted(self, ['coef_'])
+	...
+```
+- API compatibility is enforced by ~60 common checks using `check_estimator`
+  
 
 ---
 # Estimator tags
@@ -334,14 +473,47 @@ class MyMultiOutputEstimator(BaseEstimator):
 
 ---
 
-# Tutorial
+## Parallel computing and scikit-learn
 
-Requires
- - scikit-learn 0.21.2
- - pandas
- - matplotlib
+**Most scientific Python code based on numpy is parallelized by default**, due to
+multithreaded BLAS (OpenBLAS, MKL).
+ - `export OMP_NUM_THREADS = 10` (or lower) on shared servers
 
-Tutorial notebook: [github.com/glemaitre/scikit-learn-workshop-2019](https://github.com/glemaitre/scikit-learn-workshop-2019)
+--
+
+Use of threading and multiprocessing with `n_jobs` parameter in scikit-learn via joblib,
+
+
+ - better performance, but communication overhead; can be slower
+ - multiple levels of parallelism can lead to CPU oversubcription
+ - **Python 3.8**: PEP 574, Pickle protocol 5 with out-of-band data
+
+.pull-right[
+<img src="./img/joblib_logo.svg" style="width: 35%" />
+]
+---
+
+## Distributed computing
+
+Joblib supports Dask as a backend,
+
+```py
+import joblib
+from sklearn.grid_search import RandomizedSearchCV
+
+# [...]
+
+search = RandomizedSearchCV(model, param_space)
+
+with joblib.parallel_backend('dask'):
+    search.fit(X, y)
+```
+
+Also a number of scikit-learn algorithm re-implemented in a distributed
+way in [https://ml.dask.org/](https://ml.dask.org/)
+
+Can be run in YARN with `dask-yarn`.
+
 
     </textarea>
     <script src="./js/remark-latest.min.js">
